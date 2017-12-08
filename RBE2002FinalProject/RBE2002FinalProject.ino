@@ -1,27 +1,39 @@
 #include <Stepper.h>
 #include "StepperMotor.h"
-#include "UltrasonicSensor.h"
+#include "DualDCMotor.h"
 
 // Initialize Stepper motor
 const int stepsPerRevolution = 200;
-const int stepperTurn = 25;       //number of steps for a 45 degree turn
+
 StepperMotor fanStepper;
 /* stepper motor functions
  * setSpeed(rpm); set the stepper motor turning speed
  * steps(steps);  turn the stepper motor for the given steps,negative for C
  */
 
-// Initialize MaxBotix Ultrasonic Sensor
-const int MaxBotixPin = A0;
+// Initialize IRS for Stepper Zeroing and START/STOP
+const int start_stop = 18;
+const int stepperZero = 3;
 
-// Initialize UltrasonicSensor*2
-UltrasonicSensor leftULS;
-UltrasonicSensor rightULS;
+// Initialize drivetrain motors
+DualDCMotor drivetrain;
+
+// Initialize fan relay
+const int fanRelayPin = 4;
+
+// Initialize fan servo 
+const int fanServoPin = 11;
+
+int stepperFlame = 0;
+int servoFlame = 0;
+
+void findFlame(){
+  fanStepper.takeSteps(stepperTurn);
+}
 
 void setup() {
+  drivetrain.setup();
   fanStepper.setup(8,9);
-  leftULS.setup(4,5);
-  rightULS.setup(6,7);
 }
 
 void loop() {

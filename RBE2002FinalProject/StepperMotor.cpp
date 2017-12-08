@@ -36,3 +36,7 @@ void StepperMotor::takeSteps(int steps){
   
 }
 
+int StepperMotor::findFlame(){
+  
+}
+
