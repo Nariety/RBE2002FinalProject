@@ -1,12 +1,11 @@
 #include "StepperMotor.h"
 
-StepperMotor::StepperMotor(int myStepPin, int myDirPin){
-  stepPin = myStepPin;
-  dirPin = myDirPin;
+StepperMotor::StepperMotor(){
 }
 
-void StepperMotor::setup() {
-  // put your setup code here, to run once:
+void StepperMotor::setup(int myStepPin, int myDirPin) {
+  stepPin = myStepPin;
+  dirPin = myDirPin;
   pinMode(stepPin,OUTPUT);
   pinMode(dirPin,OUTPUT);
 }

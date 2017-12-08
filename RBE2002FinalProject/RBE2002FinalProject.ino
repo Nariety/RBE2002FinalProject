@@ -5,7 +5,7 @@
 // Initialize Stepper motor
 const int stepsPerRevolution = 200;
 const int stepperTurn = 25;       //number of steps for a 45 degree turn
-StepperMotor fanStepper(8,9);
+StepperMotor fanStepper;
 /* stepper motor functions
  * setSpeed(rpm); set the stepper motor turning speed
  * steps(steps);  turn the stepper motor for the given steps,negative for C
@@ -15,11 +15,13 @@ StepperMotor fanStepper(8,9);
 const int MaxBotixPin = A0;
 
 // Initialize UltrasonicSensor*2
-UltrasonicSensor leftULS(4,5);
-UltrasonicSensor rightULS(6,7);
+UltrasonicSensor leftULS;
+UltrasonicSensor rightULS;
 
 void setup() {
-  
+  fanStepper.setup(8,9);
+  leftULS.setup(4,5);
+  rightULS.setup(6,7);
 }
 
 void loop() {

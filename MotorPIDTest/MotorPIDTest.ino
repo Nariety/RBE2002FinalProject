@@ -1,19 +1,37 @@
+#include <Motors2.h>
 
 //Written by Joseph St. Germain for RBE 2002 Lab 3 A16.
 //Students are expected to fill in the PID::calc function and the calcCur function
 // The PID calc function is inteded to run a PID velocity controller 
 //and the calcCur funstion should calculate the current in ma from the current sensor.
 
-//#include "LookupTable.h"
-#include "DCMotor.h"
+#include "LookupTable.h"
+#include "PID.h"
+#include <Servo.h>
+#include <Encoder.h>
 
 //Setup lookup table class as lk
-//Lookup lk;
+Lookup lk;
 //setup PID class as pidCon
-
+PID pidCon;
+Encoder myEnc(2, 3);
 
 //Variables to run the code
-
+double setVel=90;
+double curTime=0;
+double prevTime=0;
+double timeInterval=0;
+double movement=0;
+double ticksToDeg= 0.1125;//0.2206;
+double prevPos;
+long lastTime=0;
+long lastTime2=0;
+double Vel;
+float velocity;
+float RPM;
+float current;
+float PWM;
+float analogWriteVal;
 
 // Returns Vel in degress/second
 double calcVel(){
@@ -28,9 +46,9 @@ double calcVel(){
   //encoder ticks to degrees
   movement= movement *ticksToDeg;
   //timeInterval in seconds
-//  timeInterval=timeInterval/1000;
+  timeInterval=timeInterval/1000;
   //Velocity in degrees per milliseconds
-  Vel=movement*1000/timeInterval;
+  Vel=movement/timeInterval;
   //sets curent vals to previous
   prevPos=curPos;
   prevTime=curTime;
@@ -40,19 +58,19 @@ double calcVel(){
 
 //This function should analogRead the current sense from the motor driver
 //and convert the value to current in milliamps
-//double calcCur()
-//{
-//  //read analog value
-//  double analogCurrent = analogRead(A1);
-//  //convert to volts
-//  analogCurrent *= 0.004888;
-//  //converts to current in milliamps
-//  analogCurrent = analogCurrent *1000 / 0.525;
-//  return analogCurrent;
-//}
+double calcCur(void)
+{
+  //read analog value
+  double analogCurrent = analogRead(A1);
+  //convert to volts
+  analogCurrent *= 0.004888;
+  //converts to current in milliamps
+  analogCurrent = analogCurrent *1000 / 0.525;
+  return analogCurrent;
+}
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   pidCon.setpid(1,0.01,0.01);
   //pidCon.setpid(1,0.01,0.001);
 }
@@ -72,7 +90,7 @@ if(millis()-lastTime>=10){
   //calculates the current of the motor from the analogRead function
   //use the motor drivers data sheet to find the conversion from ADC counts
   //to milliamps 
-//  current = calcCur();
+  current = calcCur();
   
   //Calculate the PID value to be sent to the motor using the analogWrite function.
   //The calc function should take in a set velocity and the current velocity.
@@ -114,9 +132,10 @@ if(millis()-lastTime2>50){
 
   //Use the lookup table class to find the torque given the current and RPM
   Serial.print("torque = ,");
-//  Serial.print(lk.torque(current,RPM));
+  Serial.print(lk.torque(current,RPM));
   Serial.println("");
   lastTime2=millis();
+
   }
 }
 

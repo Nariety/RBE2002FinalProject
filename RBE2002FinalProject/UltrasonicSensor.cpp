@@ -1,15 +1,14 @@
 #include "UltrasonicSensor.h"
 
-UltrasonicSensor::UltrasonicSensor(int myTrigPin, int myEchoPin){
-  trigPin = myTrigPin;
-  echoPin = myEchoPin;
+UltrasonicSensor::UltrasonicSensor(){
+
 }
 
-void UltrasonicSensor::setup() {
+void UltrasonicSensor::setup(int myTrigPin, int myEchoPin) {
+  trigPin = myTrigPin;
+  echoPin = myEchoPin;
   pinMode(trigPin,OUTPUT);
   pinMode(echoPin,INPUT);
-//  pinMode(led, OUTPUT);
-//  pinMode(led2, OUTPUT);
 }
 
 long UltrasonicSensor::Range() {

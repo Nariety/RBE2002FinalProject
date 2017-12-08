@@ -4,8 +4,8 @@
 
 class UltrasonicSensor{
   public:
-  UltrasonicSensor(int trigPin, int echoPin);
-  void setup();
+  UltrasonicSensor();
+  void setup(int trigPin, int echoPin);
   long Range();
   
   private:

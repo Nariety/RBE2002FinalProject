@@ -2,8 +2,8 @@
 
 class StepperMotor{
   public:
-  StepperMotor(int myStepPin, int myDirPin);
-  void setup();
+  StepperMotor();
+  void setup(int myStepPin, int myDirPin);
   void setRPM(int myRPM);
   void takeSteps(int steps);
   
