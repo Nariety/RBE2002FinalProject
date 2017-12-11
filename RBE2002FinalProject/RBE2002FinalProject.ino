@@ -12,7 +12,7 @@ StepperMotor fanStepper;
 */
 
 // Initialize IRS for START/STOP
-const int start_stopPin = 18;
+const int start_stop_pin = 18;
 
 // Initialize drivetrain motors
 DualDCMotor drivetrain;

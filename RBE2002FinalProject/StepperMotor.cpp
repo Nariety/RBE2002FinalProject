@@ -20,9 +20,11 @@ void StepperMotor::zeroSelf(){
     takeSteps(-stepCount);
   }
   else{           //when the stepper is first initialized
-    while(!digitalRead(stepperZero)){//whlie the limit switch is not triggered
-      takeSteps(-1);
+    while(digitalRead(stepperZero)){//whlie the limit switch is not triggered
+      takeSteps(1);
+      stepCount++;
     }
+    Serial.println(stepCount);
   }
 }
 
@@ -38,7 +40,7 @@ void StepperMotor::takeSteps(int steps){
   }
   else{
     digitalWrite(dirPin,LOW);
-    for(int i = steps; i > 0; i--){
+    for(int i = -steps; i > 0; i--){
       digitalWrite(stepPin,HIGH);
       delay(stepDelay);
       digitalWrite(stepPin,LOW);
