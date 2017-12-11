@@ -31,6 +31,7 @@ void findFlame() {
 }
 
 void setup() {
+  Serial.begin(9600);
   drivetrain.setup();
   fanStepper.setup(12, 13);
   pinMode(start_stop_pin,INPUT_PULLUP);

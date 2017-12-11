@@ -6,7 +6,6 @@ L3G gyro;
 LSM303 accel; \
 
 void IMU::setup() {
-  Serial.begin(9600);
   Wire.begin(); // i2c begin
 
   if (!gyro.init()) { // gyro init
