@@ -1,4 +1,3 @@
-#include <Stepper.h>
 #include "StepperMotor.h"
 #include "DualDCMotor.h"
 
