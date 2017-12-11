@@ -33,7 +33,7 @@ void findFlame() {
 
 void setup() {
   drivetrain.setup();
-  fanStepper.setup(8, 9);
+  fanStepper.setup(12, 13);
   // set up IRS for encoders
   pinMode(2, INPUT_PULLUP);
   attachInterrupt(0, LeftEnc, RISING);
