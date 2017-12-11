@@ -8,6 +8,7 @@ void StepperMotor::setup(int myStepPin, int myDirPin) {
   dirPin = myDirPin;
   pinMode(stepPin,OUTPUT);
   pinMode(dirPin,OUTPUT);
+  pinMode(stepperZero,INPUT_PULLUP);
 }
 
 void StepperMotor::setRPM(int myRPM){
@@ -19,7 +20,7 @@ void StepperMotor::zeroSelf(){
     takeSteps(-stepCount);
   }
   else{           //when the stepper is first initialized
-    while(digitalRead(stepperZero)){//whlie the limit switch is not triggered
+    while(!digitalRead(stepperZero)){//whlie the limit switch is not triggered
       takeSteps(-1);
     }
   }

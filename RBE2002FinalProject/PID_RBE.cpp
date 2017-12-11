@@ -1,9 +1,3 @@
-/*
- * Messages.h
- *
- *  Created on: 10/1/16
- *      Author: joest
- */
 #include "PID_RBE.h"
 #include "Arduino.h"
 

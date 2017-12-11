@@ -12,7 +12,7 @@ StepperMotor fanStepper;
 */
 
 // Initialize IRS for START/STOP
-const int start_stop = 18;
+const int start_stopPin = 18;
 
 // Initialize drivetrain motors
 DualDCMotor drivetrain;
@@ -33,6 +33,7 @@ void findFlame() {
 void setup() {
   drivetrain.setup();
   fanStepper.setup(12, 13);
+  pinMode(start_stop_pin,INPUT_PULLUP);
   // set up IRS for encoders
   pinMode(2, INPUT_PULLUP);
   attachInterrupt(0, LeftEnc, RISING);
