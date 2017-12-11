@@ -27,7 +27,9 @@ float PID_RBE::calc(double setVel, double curVel){
   // calculate derivative of error
   double dError = error - last_error;
   // calculate integral error. Running average is best but hard to implement
-  sum_error += error;
+  sum_error = sum_error+error-all_errors[errorCount];   // replace old error with new error
+  all_errors[errorCount] = error;                       // overwrites old errors, only ten of the errors are used
+  errorCount = (errorCount+1)%10;
   // sum up the error value to send to the motor based off gain values. 
   float pid = (error * kp + dError * kd + sum_error * ki)*-1;
   // limit control value to 0-254

@@ -5,18 +5,19 @@ class StepperMotor{
   StepperMotor();
   void setup(int myStepPin, int myDirPin);
   void setRPM(int myRPM);
+  void zeroSelf();
   void takeSteps(int steps);
-  int findFlame();
+  int findFlame(int range);
 
   int flameX = 0;
     
   private:
   int stepPin;
   int dirPin;
-  int flameSensorPin = A1;
-
+  const int stepperZero = 3;
   int stepDelay = 60;
-const int stepsPerRevolution = 200;     // since there will only be one stepper motor, the steps per revolution is hardcoded in
-const int stepperTurn = 25;          //number of steps for a 45 degree turn
+  const int flameSensorPin = A1;
+  const int stepsPerRevolution = 200;     // since there will only be one stepper motor, the steps per revolution is hardcoded in
+  int stepCount = 0;
 };
 
