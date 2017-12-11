@@ -42,6 +42,7 @@ void setup() {
 }
 
 void loop() {
+  fanStepper.zeroSelf();
   //  // reads imu every 20ms
   //  if((millis()-timer)>=20)
   //  {
