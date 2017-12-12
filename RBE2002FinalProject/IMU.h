@@ -39,7 +39,7 @@ class IMU{
   
   float G_Dt=0.020;    // Integration time (DCM algorithm)  We will run the integration loop at 50Hz if possible
   
-  long timerGyro=0;   //general purpose timer
+  long timer=0;   //general purpose timer
   long timerBuffer=0;  
   long timerPrint=0;  
 

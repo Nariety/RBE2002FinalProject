@@ -16,7 +16,10 @@ class DualDCMotor {
     void driveAlongWall();
     void turnRight();
     void turnLeft();
-
+    void driveStraight();
+    void setMotorSpeed(int rightSide, int velocity);
+    void stopMotors();
+    
     int leftEncTicks = 0;
     int rightEncTicks = 0;
 

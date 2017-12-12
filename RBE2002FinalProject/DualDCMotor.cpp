@@ -127,7 +127,7 @@ void DualDCMotor::turnLeft() {
 // drive straight with encoder
 void DualDCMotor::driveStraight() {
   double prevPosition = leftEncTicks;
-  while (analogRead(lineSensorPin) > 500 && leftEncTicks-prevPositin > ticksToPassWall) {
+  while (analogRead(lineSensorPin) > 500 && leftEncTicks-prevPosition > ticksToPassWall) {
     setMotorSpeed(0, PWM / 2);
     setMotorSpeed(1, PWM / 2);
   }
@@ -136,7 +136,7 @@ void DualDCMotor::driveStraight() {
 
 void DualDCMotor::stopMotors() {
   setMotorSpeed(0, 0);
-  setMotorSPeed(1, 0);
+  setMotorSpeed(1, 0);
 }
 
 // set motor speed based on the given motor side and velocity
@@ -170,4 +170,5 @@ void DualDCMotor::setMotorSpeed(int rightSide, int velocity) {
     }
   }
 }
+
 

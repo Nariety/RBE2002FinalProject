@@ -50,22 +50,21 @@ void setup() {
 }
 
 void loop() {
-  switch(state){
-    case STOP:  //cease all motor functions
-      drivetrain.stopMotors();
-      fanStepper.hold();
-      break;
-    case FIELDSCAN: //scan field to find general direction of flame
-      flameDegFromCenter = stepToDeg(fanStepper.findFlame(60));
-      break;
-    case FLAMESCAN: //horizontal and vertical scan to aim fan at flame
-      break;
-    case DRIVE:
-      break;
-  }
-
-
-  
+  drivetrain.driveAlongWall();
+  exit(0);
+//  switch(state){
+//    case STOP:  //cease all motor functions
+//      drivetrain.stopMotors();
+//      fanStepper.hold();
+//      break;
+//    case FIELDSCAN: //scan field to find general direction of flame
+//      flameDegFromCenter = stepToDeg(fanStepper.findFlame(60));
+//      break;
+//    case FLAMESCAN: //horizontal and vertical scan to aim fan at flame
+//      break;
+//    case DRIVE:
+//      break;
+//  }
 }
 
 //returns step number mapped to degrees (-45 is left, +45 is right)
