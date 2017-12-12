@@ -39,7 +39,7 @@ void setup() {
   pinMode(20, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(20), LeftEnc, RISING);
   pinMode(19, INPUT_PULLUP);
-  attachInterrupt(digltalPinToInterrupt(19), RightEnc, RISING);
+  attachInterrupt(digitalPinToInterrupt(19), RightEnc, RISING);
 }
 
 void loop() {

@@ -62,18 +62,13 @@ void IMU::readGyro() {
   gyro_zold = gyro_z ;
 }
 
-// update velocity
-void IMU::updateVel(){
-  
-}
-
-// update displacement
-void IMU::updateDis() {
-  timerBuffer = (millis()-timer)/1000.;
-  dis_x = accel_x*timerBuffer*timerBuffer / 2.0;
-  dis_y = accel_y*timerBuffer*timerBuffer / 2.0;
-  dis_z = accel_y*timerBuffer*timerBuffer / 2.0;
-}
+//// update displacement
+//void IMU::updateDis() {
+//  timerBuffer = (millis()-timer)/1000.;
+//  dis_x = accel_x*timerBuffer*timerBuffer / 2.0;
+//  dis_y = accel_y*timerBuffer*timerBuffer / 2.0;
+//  dis_z = accel_y*timerBuffer*timerBuffer / 2.0;
+//}
 
 void IMU::printGyro() {
   timerPrint = millis();
