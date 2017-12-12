@@ -18,7 +18,7 @@ const int start_stop_pin = 18;
 DualDCMotor drivetrain;
 
 // Initialize fan relay
-const int fanRelayPin = 4;
+const int fanRelayPin = 24;
 
 // Initialize fan servo
 const int fanServoPin = 11;
@@ -39,6 +39,8 @@ void setup() {
   Serial.begin(9600);
   fanStepper.setup(12, 13);
   drivetrain.setup();
+  pinMode(fanRelayPin, OUTPUT);
+  digitalWrite(fanRelayPin, LOW);
   pinMode(start_stop_pin, INPUT_PULLUP);
   // set up IRS for encoders
   pinMode(20, INPUT_PULLUP);
@@ -55,6 +57,7 @@ void loop() {
 //  drivetrain.driveAlongWall();
 //  exit(0);
   //fanStepper.zeroSelf();
+  
   extinguish();
   exit(0);
   
@@ -74,6 +77,7 @@ void loop() {
   Serial.println("Start robot");
   drivetrain.setMotorSpeed(1, 255);
   drivetrain.setMotorSpeed(0, 255);
+  delay(5000);
   //  drivetrain.driveAlongWall();
   drivetrain.stopMotors();
   exit(0);
@@ -98,10 +102,13 @@ int stepToDeg(int stepNum) {
 }
 
 void extinguish() {
-  fanStepper.findFlameServo(30);
+  fanStepper.findFlameServo(60);
+  Serial.println("Fan On");
   digitalWrite(fanRelayPin, HIGH);
   delay(4000);
   digitalWrite(fanRelayPin, LOW);
+  Serial.println("Fan Off");
+  delay(10);
 }
 
 void startStop() {

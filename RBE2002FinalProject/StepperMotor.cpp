@@ -11,6 +11,7 @@ void StepperMotor::setup(int myStepPin, int myDirPin) {
   pinMode(stepperZero, INPUT_PULLUP);
   digitalWrite(stepPin,LOW);
   digitalWrite(dirPin,LOW);
+  s.attach(11);
 }
 
 void StepperMotor::setRPM(int myRPM) {
@@ -19,7 +20,7 @@ void StepperMotor::setRPM(int myRPM) {
 
 void StepperMotor::zeroSelf() {
   //when the stepper is first initialized
-  while (digitalRead(stepperZero)) { //whlie the limit switch is not triggered
+  while (digitalRead(stepperZero)) { //while the limit switch is not triggered
     takeSteps(1);
     stepCount++;
   }
@@ -55,12 +56,12 @@ void StepperMotor::findFlameServo(int range){
   //zeroSelf();
   //takeSteps(range/2);
   int lowPoint = findFlame(range);
+  Serial.println("Found Low Point");
   while(digitalRead(stepperZero)){  //while the limit switch is not triggered
     takeSteps(1);
   }
-  takeSteps(-30);
-  //exit(0);
-  takeSteps(lowPoint);
+  takeSteps(-lowPoint);
+  Serial.println("At Low Point");
   boolean flag = true;
   while(flag){
     if(servoVal >= 140){
@@ -72,10 +73,8 @@ void StepperMotor::findFlameServo(int range){
       servoVal += inc;
       s.write(servoVal);
     }else{
+        Serial.println("Found Flame");
         flag = false;
-        digitalWrite(24, HIGH);
-        delay(3000);
-        digitalWrite(24, LOW);
     }
     delay(50);
   }
@@ -85,11 +84,15 @@ int StepperMotor::findFlame(int range) {
   int lowestPoint = 1023;
   int lowestPointBuffer = 0;
   int stepCountBuffer = 0;
-  zeroSelf();
-  takeSteps(-(range / 2));
-  stepCount = -(range/2);
-  for (int i = 0; i < range; i++) {
+  stepCount = 0;
+  //zeroSelf();
+  while(digitalRead(stepperZero)){  //while the limit switch is not triggered
     takeSteps(1);
+  }
+//  takeSteps(-(range / 2));
+//  stepCount = -(range/2);
+  for (int i = range; i >= 0; i--) {
+    takeSteps(-1);
     stepCount++;
     lowestPointBuffer = analogRead(flameSensorPin);
     if (lowestPointBuffer < lowestPoint) {
