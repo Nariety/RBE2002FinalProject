@@ -1,4 +1,3 @@
-#include <Stepper.h>
 #include "StepperMotor.h"
 #include "DualDCMotor.h"
 
@@ -13,7 +12,7 @@ StepperMotor fanStepper;
 */
 
 // Initialize IRS for START/STOP
-const int start_stop = 18;
+const int start_stop_pin = 18;
 
 // Initialize drivetrain motors
 DualDCMotor drivetrain;
@@ -37,13 +36,15 @@ void findFlame() {
 }
 
 void setup() {
+  Serial.begin(9600);
   drivetrain.setup();
-  fanStepper.setup(8, 9);
+  fanStepper.setup(12, 13);
+  pinMode(start_stop_pin,INPUT_PULLUP);
   // set up IRS for encoders
-  pinMode(2, INPUT_PULLUP);
-  attachInterrupt(0, LeftEnc, RISING);
-  pinMode(3, INPUT_PULLUP);
-  attachInterrupt(1, RightEnc, RISING);
+  pinMode(20, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(20), LeftEnc, RISING);
+  pinMode(19, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(19), RightEnc, RISING);
   pinMode(18, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(18), startStop, FALLING);
 }

@@ -1,9 +1,3 @@
-/*
- * Messages.h
- *
- *  Created on: 10/1/16
- *      Author: joest
- */
 #include "PID_RBE.h"
 #include "Arduino.h"
 
@@ -32,12 +26,12 @@ float PID_RBE::calc(double setVel, double curVel){
   errorCount = (errorCount+1)%10;
   // sum up the error value to send to the motor based off gain values. 
   float pid = (error * kp + dError * kd + sum_error * ki)*-1;
-  // limit control value to 0-254
+  // limit control value to -254 to 254
   if(pid > 254){
     pid = 254;
   }
-  else if (pid < 0){
-    pid = 0;
+  else if (pid < -254){
+    pid = -254;
   }
   last_error = error;
   //return the control signal
