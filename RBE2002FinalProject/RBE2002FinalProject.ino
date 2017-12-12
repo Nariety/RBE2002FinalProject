@@ -26,6 +26,11 @@ const int fanServoPin = 11;
 int stepperFlame = 0;
 int servoFlame = 0;
 
+int flameDegFromCenter = 0;
+
+enum State {STOP, FIELDSCAN, FLAMESCAN, DRIVE} state;
+int prevState = STOP;
+
 void findFlame() {
   fanStepper.findFlame(stepperTurn * 2);
 }
@@ -39,22 +44,45 @@ void setup() {
   pinMode(20, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(20), LeftEnc, RISING);
   pinMode(19, INPUT_PULLUP);
-  attachInterrupt(digltalPinToInterrupt(19), RightEnc, RISING);
+  attachInterrupt(digitalPinToInterrupt(19), RightEnc, RISING);
+  pinMode(18, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(18), startStop, FALLING);
 }
 
 void loop() {
-  //  // reads imu every 20ms
-  //  if((millis()-timer)>=20)
-  //  {
-  //  complimentaryFilter();
-  //  readGyro();
-  //  calDis();
-  //  }
-  //  // prints the gyro value once per second
-  //  if((millis()-timer2)>=1000)
-  //  {
-  //    printGyro();
-  //  }
+  switch(state){
+    case STOP:  //cease all motor functions
+      drivetrain.stopMotors();
+      fanStepper.hold();
+      break;
+    case FIELDSCAN: //scan field to find general direction of flame
+      flameDegFromCenter = stepToDeg(fanStepper.findFlame(60));
+      break;
+    case FLAMESCAN: //horizontal and vertical scan to aim fan at flame
+      break;
+    case DRIVE:
+      break;
+  }
+
+
+  
+}
+
+//returns step number mapped to degrees (-45 is left, +45 is right)
+int stepToDeg(int stepNum){
+  return map(stepNum, -30, 30, -45, 45);
+}
+
+void startStop() {
+  if(state == STOP){
+    state = prevState;
+    prevState = STOP;
+  }else{
+    prevState = state;
+    state = STOP;
+    drivetrain.stopMotors();
+    fanStepper.hold();
+  }
 }
 
 
