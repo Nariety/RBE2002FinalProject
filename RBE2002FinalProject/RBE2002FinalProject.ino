@@ -36,10 +36,10 @@ void setup() {
   fanStepper.setup(12, 13);
   pinMode(start_stop_pin,INPUT_PULLUP);
   // set up IRS for encoders
-  pinMode(2, INPUT_PULLUP);
-  attachInterrupt(0, LeftEnc, RISING);
-  pinMode(3, INPUT_PULLUP);
-  attachInterrupt(1, RightEnc, RISING);
+  pinMode(20, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(20), LeftEnc, RISING);
+  pinMode(19, INPUT_PULLUP);
+  attachInterrupt(digltalPinToInterrupt(19), RightEnc, RISING);
 }
 
 void loop() {

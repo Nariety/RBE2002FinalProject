@@ -1,8 +1,13 @@
 class IMU{
   public:
   // functions
+  IMU();
   void setup();
   void printGyro();
+  float getGyroZ();
+  float getAccelX();
+  float getAccelY();
+  void updateIMU();
 
   private:
   float G_gain=.0049; // gyros gain factor for 250deg/sec 
@@ -28,13 +33,15 @@ class IMU{
   float aerry; // Accel y error
   float aerrz; // Accel 7 error
   
+  float vel_x, vel_y, vel_z;
+  
   float dis_x, dis_y, dis_z;
   
   float G_Dt=0.020;    // Integration time (DCM algorithm)  We will run the integration loop at 50Hz if possible
   
-  long timer=0;   //general purpose timer
-  long timer1=0;  
-  long timer2=0;  
+  long timerGyro=0;   //general purpose timer
+  long timerBuffer=0;  
+  long timerPrint=0;  
 
   // functions
   void gyroZero();

@@ -13,9 +13,9 @@ class DualDCMotor {
     void setup();
     double calcLeftVel();
     double calcRightVel();
-    void driveStraight();
-    void LeftEnc();
-    void RightEnc();
+    void driveAlongWall();
+    void turnRight();
+    void turnLeft();
 
     int leftEncTicks = 0;
     int rightEncTicks = 0;
@@ -30,26 +30,32 @@ class DualDCMotor {
     UltrasonicSensor leftULS;
     UltrasonicSensor rightULS;
 
+    // Initialize IMU
+    IMU imu;
+
     // Initialize DC Motor control pins
-    const int leftMotorPin = 5;
-    const int rightMotorPin = 6;
+    const int leftMotorFor = 3;
+    const int leftMotorRev = 6;
+    const int rightMotorFor = 5;
+    const int rightMotorRev = 4;
     const int leftEncPin = 2;
-    const int rightEncPin = 3;
+    const int rightEncPin = 19;
 
     // Initialize Popolu Line Sensor
-    const int lineSensorPin = 15; /*****************************/
+    const int lineSensorPin = 15; 
 
     double setDis = 6;
     double curTime = 0;
     double prevTime = 0;
     double timeInterval = 0;
     double movement = 0;
-    double ticksToDeg = 0.1125; //0.2206;
+    double ticksToDeg = 0.09; //0.2206;
     double Vel = 0;
     double prevPos;
     long lastTime = 0;
+    double ticksToPassWall = 2800;
 
-    int PWM = 0;
+    int PWM = 255;
     int prevPWM = 0;
     int sideError = 0;
 };
