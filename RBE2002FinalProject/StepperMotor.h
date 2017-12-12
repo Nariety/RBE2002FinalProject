@@ -11,6 +11,11 @@ class StepperMotor{
   void findFlameServo(int range);
   void hold();
   int findFlame(int range);
+<<<<<<< HEAD
+=======
+  void hold();
+
+>>>>>>> 40995c495d988b44148d4f64a52f243578c58085
   int flameX = 0;
     
   private:

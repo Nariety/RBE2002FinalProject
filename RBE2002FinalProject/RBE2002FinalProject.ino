@@ -37,9 +37,9 @@ void findFlame() {
 
 void setup() {
   Serial.begin(9600);
-  drivetrain.setup();
   fanStepper.setup(12, 13);
-  pinMode(start_stop_pin,INPUT_PULLUP);
+  drivetrain.setup();
+  pinMode(start_stop_pin, INPUT_PULLUP);
   // set up IRS for encoders
   pinMode(20, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(20), LeftEnc, RISING);
@@ -47,9 +47,11 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(19), RightEnc, RISING);
   pinMode(18, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(18), startStop, FALLING);
+  Serial.println("Robot set up finished");
 }
 
 void loop() {
+<<<<<<< HEAD
 
   
 //  drivetrain.driveAlongWall();
@@ -71,10 +73,31 @@ void loop() {
 //    case DRIVE:
 //      break;
 //  }
+=======
+  Serial.println("Start robot");
+  drivetrain.setMotorSpeed(1, 255);
+  drivetrain.setMotorSpeed(0, 255);
+  //  drivetrain.driveAlongWall();
+  drivetrain.stopMotors();
+  exit(0);
+  //  switch(state){
+  //    case STOP:  //cease all motor functions
+  //      drivetrain.stopMotors();
+  //      fanStepper.hold();
+  //      break;
+  //    case FIELDSCAN: //scan field to find general direction of flame
+  //      flameDegFromCenter = stepToDeg(fanStepper.findFlame(60));
+  //      break;
+  //    case FLAMESCAN: //horizontal and vertical scan to aim fan at flame
+  //      break;
+  //    case DRIVE:
+  //      break;
+  //  }
+>>>>>>> 40995c495d988b44148d4f64a52f243578c58085
 }
 
 //returns step number mapped to degrees (-45 is left, +45 is right)
-int stepToDeg(int stepNum){
+int stepToDeg(int stepNum) {
   return map(stepNum, -30, 30, -45, 45);
 }
 
@@ -86,10 +109,10 @@ void extinguish() {
 }
 
 void startStop() {
-  if(state == STOP){
+  if (state == STOP) {
     state = prevState;
     prevState = STOP;
-  }else{
+  } else {
     prevState = state;
     state = STOP;
     drivetrain.stopMotors();
