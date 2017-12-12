@@ -101,10 +101,6 @@ int StepperMotor::findFlame(int range) {
 }
 
 void StepperMotor::hold(){
-<<<<<<< HEAD
   digitalWrite(stepPin, LOW);
-=======
-  digitalWrite(stepPin,LOW);
->>>>>>> 40995c495d988b44148d4f64a52f243578c58085
 }
 

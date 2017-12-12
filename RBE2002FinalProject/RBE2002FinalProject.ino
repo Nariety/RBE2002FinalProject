@@ -51,8 +51,6 @@ void setup() {
 }
 
 void loop() {
-<<<<<<< HEAD
-
   
 //  drivetrain.driveAlongWall();
 //  exit(0);
@@ -73,7 +71,6 @@ void loop() {
 //    case DRIVE:
 //      break;
 //  }
-=======
   Serial.println("Start robot");
   drivetrain.setMotorSpeed(1, 255);
   drivetrain.setMotorSpeed(0, 255);
@@ -93,7 +90,6 @@ void loop() {
   //    case DRIVE:
   //      break;
   //  }
->>>>>>> 40995c495d988b44148d4f64a52f243578c58085
 }
 
 //returns step number mapped to degrees (-45 is left, +45 is right)

@@ -169,7 +169,6 @@ void DualDCMotor::setMotorSpeed(int rightSide, int velocity) {
     }
     else {
       digitalWrite(leftMotorFor, LOW);
-      analogWrite(leftMotorRev, -velocity);
       analogWrite(leftMotorRev, velocity);
     }
   }
