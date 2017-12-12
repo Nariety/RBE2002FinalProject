@@ -18,6 +18,7 @@ class DualDCMotor {
     void turnLeft();
     void driveStraight();
     void setMotorSpeed(int rightSide, int velocity);
+  
     void stopMotors();
 
     int leftEncTicks = 0;

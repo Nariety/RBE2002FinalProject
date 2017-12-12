@@ -63,5 +63,8 @@ int StepperMotor::findFlame(int range) {
     }
   }
   return stepCountBuffer;
+
+void StepperMotor::hold(){
+  digitalWrite(stepPin, LOW);
 }
 

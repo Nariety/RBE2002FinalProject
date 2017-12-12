@@ -7,6 +7,7 @@ class StepperMotor{
   void setRPM(int myRPM);
   void zeroSelf();
   void takeSteps(int steps);
+  void hold();
   int findFlame(int range);
 
   int flameX = 0;
