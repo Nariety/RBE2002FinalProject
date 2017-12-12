@@ -2,10 +2,6 @@
 #include "StepperMotor.h"
 #include "DualDCMotor.h"
 
-//Robot state
-String state = "STOP";
-String prevState = "DRIVE";
-
 // Initialize Stepper motor
 const int stepsPerRevolution = 200;
 const int stepperTurn = 25;          //number of steps for a 45 degree turn
@@ -32,6 +28,9 @@ int stepperFlame = 0;
 int servoFlame = 0;
 
 int flameDegFromCenter = 0;
+
+enum State {STOP, FIELDSCAN, FLAMESCAN, DRIVE} state;
+int prevState = STOP;
 
 void findFlame() {
   fanStepper.findFlame(stepperTurn * 2);
@@ -66,16 +65,16 @@ void loop() {
 
 
   switch(state){
-    case "STOP":  //cease all motor functions
+    case STOP:  //cease all motor functions
       drivetrain.stopMotors();
       fanStepper.hold();
       break;
-    case "FIELDSCAN": //scan field to find general direction of flame
+    case FIELDSCAN: //scan field to find general direction of flame
       flameDegFromCenter = stepToDeg(fanStepper.findFlame(60));
       break;
-    case "FLAMESCAN": //horizontal and vertical scan to aim fan at flame
+    case FLAMESCAN: //horizontal and vertical scan to aim fan at flame
       break;
-    case "DRIVE":
+    case DRIVE:
       break;
   }
 
@@ -89,12 +88,12 @@ int stepToDeg(int stepNum){
 }
 
 void startStop() {
-  if(state.equals("STOP")){
+  if(state == STOP){
     state = prevState;
-    prevState = "STOP";
+    prevState = STOP;
   }else{
     prevState = state;
-    state = "STOP";
+    state = STOP;
     drivetrain.stopMotors();
     fanStepper.hold();
   }
