@@ -62,18 +62,13 @@ void IMU::readGyro() {
   gyro_zold = gyro_z ;
 }
 
-// update velocity
-void IMU::updateVel(){
-  
-}
-
-// update displacement
-void IMU::updateDis() {
-  timerBuffer = (millis()-timer)/1000.;
-  dis_x = accel_x*timerBuffer*timerBuffer / 2.0;
-  dis_y = accel_y*timerBuffer*timerBuffer / 2.0;
-  dis_z = accel_y*timerBuffer*timerBuffer / 2.0;
-}
+//// update displacement
+//void IMU::updateDis() {
+//  timerBuffer = (millis()-timer)/1000.;
+//  dis_x = accel_x*timerBuffer*timerBuffer / 2.0;
+//  dis_y = accel_y*timerBuffer*timerBuffer / 2.0;
+//  dis_z = accel_y*timerBuffer*timerBuffer / 2.0;
+//}
 
 void IMU::printGyro() {
   timerPrint = millis();
@@ -105,7 +100,9 @@ void IMU::Accel_Init(){
   accel.init();
   accel.enableDefault();
   Serial.print("Accel Device ID");
+  delay(10);
   Serial.println(accel.getDeviceType());
+  delay(10);
   switch (accel.getDeviceType())
   {
     case LSM303::device_D:
@@ -125,13 +122,13 @@ void IMU::accelZero() {
   // takes 100 samples of the accel
   for (int i = 0; i < 100; i++) {
     gyro.read();
-//    aerrx += accel.a.x >> 4;
-//    aerry += accel.a.y >> 4;
+    aerrx += accel.a.x >> 4;
+    aerry += accel.a.y >> 4;
     aerrz += accel.a.z >> 4;
     delay(10);
   }
-//  aerrx = gerrx / 100; // average reading to obtain an error/offset
-//  aerry = gerry / 100;
+  aerrx = gerrx / 100; // average reading to obtain an error/offset
+  aerry = gerry / 100;
   aerrz = gerrz / 100;
   Serial.println("accel starting values");
 //  Serial.println(aerrx); // print error vals
@@ -145,13 +142,13 @@ void IMU::readAccel() {
   {
     accel.readAcc();
 
-//    accel_x = accel.a.x >> 4; // shift left 4 bits to use 12-bit representation (1 g = 256)
-//    accel_y = accel.a.y >> 4;
+    accel_x = accel.a.x >> 4; // shift left 4 bits to use 12-bit representation (1 g = 256)
+    accel_y = accel.a.y >> 4;
     accel_z = accel.a.z >> 4;
 
     // accelerations in G
-//    accel_x = (accel_x / 256);
-//    accel_y = (accel_y / 256);
+    accel_x = (accel_x / 256);
+    accel_y = (accel_y / 256);
     accel_z = (accel_z / 256);
   }
 }

@@ -21,9 +21,9 @@ void DualDCMotor::setup() {
   // set up ultrasonic sensors
   pinMode(MaxBotixPin, OUTPUT);
   leftULS.setup(9, 10);
-  rightULS.setup(0, 1);
+//  rightULS.setup(0, 1);
   imu.setup();
-
+  Serial.println("IMU set up finished");
   // set up pid control for driving
   pidTurn.setpid(1, 0.01, 0.01);
   //pidCon.setpid(1,0.01,0.001);
@@ -152,7 +152,7 @@ void DualDCMotor::setMotorSpeed(int rightSide, int velocity) {
     }
     else {
       digitalWrite(rightMotorFor, LOW);
-      analogWrite(rightMotorRev, -velocity);
+      analogWrite(rightMotorRev, velocity);
     }
   }
   else {                  // left motor is the target
@@ -166,7 +166,7 @@ void DualDCMotor::setMotorSpeed(int rightSide, int velocity) {
     }
     else {
       digitalWrite(leftMotorFor, LOW);
-      analogWrite(leftMotorRev, -velocity);
+      analogWrite(leftMotorRev, velocity);
     }
   }
 }

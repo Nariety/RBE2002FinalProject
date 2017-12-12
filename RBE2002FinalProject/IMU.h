@@ -10,8 +10,8 @@ class IMU{
   void updateIMU();
 
   private:
-  float G_gain=.0049; // gyros gain factor for 250deg/sec 
-  float A_gain=.11; // gyros gain factor for 250deg/sec
+  float G_gain=.0053; // gyros gain factor for 250deg/sec 
+  float A_gain=.15; // gyros gain factor for 250deg/sec
 
   float gyro_x; //gyro x val
   float gyro_y; //gyro x val

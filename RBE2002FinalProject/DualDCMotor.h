@@ -31,7 +31,7 @@ class DualDCMotor {
 
     // Initialize UltrasonicSensor*2
     UltrasonicSensor leftULS;
-    UltrasonicSensor rightULS;
+//    UltrasonicSensor rightULS;
 
     // Initialize IMU
     IMU imu;

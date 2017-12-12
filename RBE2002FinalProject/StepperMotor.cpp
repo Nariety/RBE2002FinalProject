@@ -9,6 +9,8 @@ void StepperMotor::setup(int myStepPin, int myDirPin) {
   pinMode(stepPin, OUTPUT);
   pinMode(dirPin, OUTPUT);
   pinMode(stepperZero, INPUT_PULLUP);
+  digitalWrite(stepPin,LOW);
+  digitalWrite(dirPin,LOW);
 }
 
 void StepperMotor::setRPM(int myRPM) {
@@ -63,5 +65,9 @@ int StepperMotor::findFlame(int range) {
     }
   }
   return stepCountBuffer;
+}
+
+void StepperMotor::hold(){
+  digitalWrite(stepPin,LOW);
 }
 
