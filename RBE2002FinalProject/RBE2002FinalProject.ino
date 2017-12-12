@@ -2,6 +2,9 @@
 #include "StepperMotor.h"
 #include "DualDCMotor.h"
 
+//Robot state
+String state = "STOP";
+
 // Initialize Stepper motor
 const int stepsPerRevolution = 200;
 const int stepperTurn = 25;          //number of steps for a 45 degree turn
@@ -54,6 +57,22 @@ void loop() {
   //  {
   //    printGyro();
   //  }
+
+
+
+  switch(state){
+    case "STOP":
+      break;
+    case "HSCAN":
+      break;
+    case "VSCAN":
+      break;
+    case "DRIVE":
+      break;
+  }
+
+
+  
 }
 
 
