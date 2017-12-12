@@ -47,10 +47,43 @@ void StepperMotor::takeSteps(int steps) {
 
 }
 
+void StepperMotor::findFlameServo(int range){
+  int inc = 3;
+  int servoVal = 55;
+  //zeroSelf();
+  //takeSteps(range/2);
+  int lowPoint = findFlame(range);
+  while(digitalRead(stepperZero)){  //while the limit switch is not triggered
+    takeSteps(1);
+  }
+  takeSteps(-30);
+  //exit(0);
+  takeSteps(lowPoint);
+  boolean flag = true;
+  while(flag){
+    if(servoVal >= 140){
+      inc = -3;
+    }else if(servoVal <= 20){
+      inc = 3;
+    }
+    if(analogRead(A1) > 40){
+      servoVal += inc;
+      s.write(servoVal);
+    }else{
+        flag = false;
+        digitalWrite(24, HIGH);
+        delay(3000);
+        digitalWrite(24, LOW);
+    }
+    delay(50);
+  }
+}
+
 int StepperMotor::findFlame(int range) {
   int lowestPoint = 1023;
   int lowestPointBuffer = 0;
   int stepCountBuffer = 0;
+  zeroSelf();
   takeSteps(-(range / 2));
   stepCount = -(range/2);
   for (int i = 0; i < range; i++) {
@@ -63,5 +96,9 @@ int StepperMotor::findFlame(int range) {
     }
   }
   return stepCountBuffer;
+}
+
+void StepperMotor::hold(){
+  digitalWrite(stepPin, LOW);
 }
 

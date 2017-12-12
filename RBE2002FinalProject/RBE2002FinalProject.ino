@@ -50,8 +50,14 @@ void setup() {
 }
 
 void loop() {
-  drivetrain.driveAlongWall();
+
+  
+//  drivetrain.driveAlongWall();
+//  exit(0);
+  //fanStepper.zeroSelf();
+  extinguish();
   exit(0);
+  
 //  switch(state){
 //    case STOP:  //cease all motor functions
 //      drivetrain.stopMotors();
@@ -70,6 +76,13 @@ void loop() {
 //returns step number mapped to degrees (-45 is left, +45 is right)
 int stepToDeg(int stepNum){
   return map(stepNum, -30, 30, -45, 45);
+}
+
+void extinguish() {
+  fanStepper.findFlameServo(30);
+  digitalWrite(fanRelayPin, HIGH);
+  delay(4000);
+  digitalWrite(fanRelayPin, LOW);
 }
 
 void startStop() {

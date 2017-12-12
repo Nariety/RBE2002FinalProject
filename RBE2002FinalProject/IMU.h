@@ -51,6 +51,8 @@ class IMU{
   void accelZero();
   void readAccel();
   void complimentaryFilter();
+  void updateVel();
+  void updateDis();
 };
 
 
