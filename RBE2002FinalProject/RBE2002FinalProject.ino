@@ -4,6 +4,7 @@
 
 //Robot state
 String state = "STOP";
+String prevState = "DRIVE";
 
 // Initialize Stepper motor
 const int stepsPerRevolution = 200;
@@ -30,6 +31,8 @@ const int fanServoPin = 11;
 int stepperFlame = 0;
 int servoFlame = 0;
 
+int flameDegFromCenter = 0;
+
 void findFlame() {
   fanStepper.findFlame(stepperTurn * 2);
 }
@@ -42,6 +45,8 @@ void setup() {
   attachInterrupt(0, LeftEnc, RISING);
   pinMode(3, INPUT_PULLUP);
   attachInterrupt(1, RightEnc, RISING);
+  pinMode(18, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(18), startStop, FALLING);
 }
 
 void loop() {
@@ -66,6 +71,7 @@ void loop() {
       fanStepper.hold();
       break;
     case "FIELDSCAN": //scan field to find general direction of flame
+      flameDegFromCenter = stepToDeg(fanStepper.findFlame(60));
       break;
     case "FLAMESCAN": //horizontal and vertical scan to aim fan at flame
       break;
@@ -75,6 +81,23 @@ void loop() {
 
 
   
+}
+
+//returns step number mapped to degrees (-45 is left, +45 is right)
+int stepToDeg(int stepNum){
+  return map(stepNum, -30, 30, -45, 45);
+}
+
+void startStop() {
+  if(state.equals("STOP")){
+    state = prevState;
+    prevState = "STOP";
+  }else{
+    prevState = state;
+    state = "STOP";
+    drivetrain.stopMotors();
+    fanStepper.hold();
+  }
 }
 
 
