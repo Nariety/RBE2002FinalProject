@@ -38,7 +38,7 @@ void findFlame() {
 
 void setup() {
   drivetrain.setup();
-  fanStepper.setup(8, 9);
+  fanStepper.setup(11, 12);
   // set up IRS for encoders
   pinMode(2, INPUT_PULLUP);
   attachInterrupt(0, LeftEnc, RISING);
@@ -46,6 +46,8 @@ void setup() {
   attachInterrupt(1, RightEnc, RISING);
   pinMode(18, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(18), startStop, FALLING);
+  pinMode(fanRelayPin, OUTPUT);
+  digitalWrite(fanRelayPin, LOW);
 }
 
 void loop() {
@@ -63,7 +65,7 @@ void loop() {
   //  }
 
 
-
+/*
   switch(state){
     case STOP:  //cease all motor functions
       drivetrain.stopMotors();
@@ -77,7 +79,10 @@ void loop() {
     case DRIVE:
       break;
   }
-
+*/
+  fanStepper.zeroSelf();
+//  extinguish();
+//  while(true);
 
   
 }
@@ -85,6 +90,13 @@ void loop() {
 //returns step number mapped to degrees (-45 is left, +45 is right)
 int stepToDeg(int stepNum){
   return map(stepNum, -30, 30, -45, 45);
+}
+
+void extinguish() {
+  fanStepper.findFlameServo(60);
+  digitalWrite(fanRelayPin, HIGH);
+  delay(4000);
+  digitalWrite(fanRelayPin, LOW);
 }
 
 void startStop() {
@@ -98,7 +110,6 @@ void startStop() {
     fanStepper.hold();
   }
 }
-
 
 void LeftEnc() {
   drivetrain.leftEncTicks++;
