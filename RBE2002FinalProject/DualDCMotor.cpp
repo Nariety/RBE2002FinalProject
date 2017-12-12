@@ -88,4 +88,10 @@ void DualDCMotor::driveStraight() {
   }
 }
 
+//stop all motor movement
+void DualDCMotor::stopMotors(){
+  analogWrite(leftMotorPin, 0);
+  analogWrite(rightMotorPin, 0);
+}
+
 

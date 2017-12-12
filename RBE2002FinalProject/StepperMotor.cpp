@@ -50,6 +50,7 @@ void StepperMotor::takeSteps(int steps){
 int StepperMotor::findFlame(int range){
   int lowestPoint = 1023;
   int lowestPointBuffer = 0;
+  int lowestStep = 0;
   takeSteps(-(range/2));
   for(int i = 0;i<range;i++){
     takeSteps(1);
@@ -57,8 +58,14 @@ int StepperMotor::findFlame(int range){
     lowestPointBuffer = analogRead(flameSensorPin);
     if(lowestPointBuffer < lowestPoint){
       lowestPoint = lowestPointBuffer;
+      lowestStep = -(range/2) + stepCount;
     }
   }
-  return lowestPoint;
+  //return lowestPoint;
+  return lowestStep;
+}
+
+void StepperMotor::hold(){
+  digitalWrite(stepPin, LOW);
 }
 
