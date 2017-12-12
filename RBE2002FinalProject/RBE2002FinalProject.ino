@@ -61,11 +61,13 @@ void loop() {
 
 
   switch(state){
-    case "STOP":
+    case "STOP":  //cease all motor functions
+      drivetrain.stopMotors();
+      fanStepper.hold();
       break;
-    case "HSCAN":
+    case "FIELDSCAN": //scan field to find general direction of flame
       break;
-    case "VSCAN":
+    case "FLAMESCAN": //horizontal and vertical scan to aim fan at flame
       break;
     case "DRIVE":
       break;

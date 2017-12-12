@@ -62,3 +62,7 @@ int StepperMotor::findFlame(int range){
   return lowestPoint;
 }
 
+void StepperMotor::hold(){
+  digitalWrite(stepPin, LOW);
+}
+

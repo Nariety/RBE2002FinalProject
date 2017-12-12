@@ -86,12 +86,12 @@ void DualDCMotor::driveStraight() {
     //Sets the lastTime variable
     lastTime = millis();
   }
+}
 
-  //stop all motor movement
-  void DualDCMotor::stopMotors(){
-    analogWrite(leftMotorPin, 0);
-    analogWrite(rightMotorPin, 0);
-  }
+//stop all motor movement
+void DualDCMotor::stopMotors(){
+  analogWrite(leftMotorPin, 0);
+  analogWrite(rightMotorPin, 0);
 }
 
 
