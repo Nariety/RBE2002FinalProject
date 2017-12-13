@@ -71,6 +71,7 @@ double DualDCMotor::calcRightVel() {
 
 // drive straight while following the wall on the left side
 long DualDCMotor::driveAlongWall(long timer) {
+  Serial.println("In drive along wall");
   lastTime = millis();
   // start driving the robot forward
   setMotorSpeed(0, PWM);
