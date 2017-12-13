@@ -3,14 +3,17 @@
 StepperMotor::StepperMotor() {
 }
 
-void StepperMotor::setup(int myStepPin, int myDirPin) {
+void StepperMotor::setup(int myStepPin, int myDirPin, int myEnPin) {
   stepPin = myStepPin;
   dirPin = myDirPin;
+//  enPin = myEnPin;
   pinMode(stepPin, OUTPUT);
   pinMode(dirPin, OUTPUT);
+//  pinMode(enPin, OUTPUT);
   pinMode(stepperZero, INPUT_PULLUP);
   digitalWrite(stepPin,LOW);
   digitalWrite(dirPin,LOW);
+//  digitalWrite(enPin,LOW);
   s.attach(11);
 }
 

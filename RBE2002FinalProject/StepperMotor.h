@@ -18,6 +18,8 @@ class StepperMotor{
   private:
   int stepPin;
   int dirPin;
+  int enPin;
+  
   const int stepperZero = 25;
   int stepDelay = 30;
   const int flameSensorPin = A1;

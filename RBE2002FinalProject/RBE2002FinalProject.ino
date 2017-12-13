@@ -40,7 +40,7 @@ int prevState = STOP;
 
 void setup() {
   Serial.begin(9600);
-  fanStepper.setup(12, 13);
+  fanStepper.setup(12, 13, 11);
   drivetrain.setup();
   pinMode(fanRelayPin, OUTPUT);
   digitalWrite(fanRelayPin, LOW);
@@ -61,6 +61,7 @@ void loop() {
     UpdateIMU();
     timer = millis();
   }
+<<<<<<< HEAD
 
   switch (state) {
     case STOP:  //cease all motor functions
@@ -110,6 +111,14 @@ void loop() {
         timer = drivetrain.turnRight(timer);
       }
       break;
+=======
+  if (millis() - timer2 >= 5000) {
+    //      timer = drivetrain.turnRight(timer);
+    //      timer = drivetrain.turnLeft(timer);
+    timer = drivetrain.driveAlongWall(timer);
+    //      Serial.println(drivetrain.imu.getGyroZ());
+    timer2 = millis();
+>>>>>>> 3fdd8c3d1748b5166d06fdd17ab3b8b1f9156aed
   }
 }
 

@@ -27,6 +27,7 @@ void DualDCMotor::setup() {
   delay(50);
   // set up pid control for driving
   pidTurn.setpid(5, 0.28, 0.05);
+  pidDrive.setpid(
   //pidCon.setpid(1,0.01,0.001);
 }
 
@@ -83,22 +84,33 @@ long DualDCMotor::driveAlongWall(long timer) {
   Serial.println(analogRead(lineSensorPin));
   Serial.print("Left ULS  ");
   Serial.println(leftULS.Range());
+  double prevPosition = leftEncTicks;
 
   // when the wall in front is far enough, the line sensor is not detecting an edge, and leftULS is detecting a wall
   while (analogRead(MaxBotixPin) > 10 && analogRead(lineSensorPin) < 700 && leftULS.Range() < 8) {
-
+  while ((analogRead(MaxBotixPin) > 10 && analogRead(lineSensorPin) < 700) && (leftULS.Range() < 20 && leftEncTicks - prevPosition < ticksToDrive)) {
     if (millis() - timer >= 50) {  // update gyro values at 20Hz
       imu.complimentaryFilter();
       timer = millis();
     }
 
     if (millis() - lastTime >= 200) {
+      Serial.println("Within loop");
+
+      //      Serial.print("Front ULS  ");
+      //      Serial.println(analogRead(MaxBotixPin));
+      //      Serial.print("Line  ");
+      //      Serial.println(analogRead(lineSensorPin));
+      //      Serial.print("Left ULS  ");
+      //      Serial.println(leftULS.Range());
       sideError = leftULS.Range() - setDis;
       if (sideError > 0) {
         setMotorSpeed(0, PWM - sideError * 20);
+        setMotorSpeed(0, PWM - (sideError * 20));
       }
       else if (sideError < 0) {
         setMotorSpeed(1, PWM - sideError * 20);
+        setMotorSpeed(1, PWM - 20 + (sideError * 20));
       }
       lastTime = millis();
     }
@@ -122,6 +134,8 @@ long DualDCMotor::turnTo(long timer, long degree) {
         velocity = pidTurn.calc(targetAngle, currentAngle);
         Serial.println(velocity);
         Serial.println(currentAngle);
+        //        Serial.println(velocity);
+        //        Serial.println(currentAngle);
         setMotorSpeed(0, velocity);
         setMotorSpeed(1, -velocity);
         currentAngle = imu.getGyroZ();
@@ -161,6 +175,8 @@ long DualDCMotor::turnRight(long timer) {
       velocity = pidTurn.calc(targetAngle, currentAngle);
       Serial.println(velocity);
       Serial.println(currentAngle);
+      //      Serial.println(velocity);
+      //      Serial.println(currentAngle);
       setMotorSpeed(0, velocity);
       setMotorSpeed(1, -velocity);
       currentAngle = imu.getGyroZ();
@@ -193,10 +209,51 @@ long DualDCMotor::turnLeft(long timer) {
 
 // drive straight with encoder
 long DualDCMotor::driveStraight(long timer) {
+// drive straight pass wall with encoder
+long DualDCMotor::drivePassWall(long timer) {
   double prevPosition = leftEncTicks;
   setMotorSpeed(0, PWM);
   setMotorSpeed(1, PWM - 20);
   while (analogRead(lineSensorPin) < 700 && leftEncTicks - prevPosition < ticksToPassWall) {
+    if (millis() - timer >= 50) {  // update gyro values at 20Hz
+      imu.complimentaryFilter();
+      timer = millis();
+    }
+  }
+  stopMotors();
+  return timer;
+}
+
+// drive straight with encoder until a wall on left or in front is detected
+long DualDCMotor::driveStraight(long timer) {
+  setMotorSpeed(0, PWM);
+  setMotorSpeed(1, PWM - 20);
+  // when no line is detected, when no left wall is detected, when no front wall is detected
+  while ((analogRead(lineSensorPin) < 700 && leftULS.Range() > 20) && analogRead(MaxBotixPin) > 10) {
+    if (millis() - timer >= 50) {  // update gyro values at 20Hz
+      imu.complimentaryFilter();
+      timer = millis();
+    }
+//    if (millis() - lastTime > 150) {
+//      error = pidTurn.calc(targetAngle, currentAngle);
+//      //      Serial.println(velocity);
+//      //      Serial.println(currentAngle);
+//      setMotorSpeed(0, velocity);
+//      setMotorSpeed(1, -velocity);
+//      currentAngle = imu.getGyroZ();
+//      lastTime = millis();
+//    }
+  }
+  stopMotors();
+  return timer;
+}
+
+// drive straight pass wall with encoder
+long DualDCMotor::backOff(long timer) {
+  double prevPosition = leftEncTicks;
+  setMotorSpeed(0, -PWM);
+  setMotorSpeed(1, 20-PWM);
+  while (analogRead(lineSensorPin) < 700 && leftEncTicks - prevPosition < ticksToBackOff) {
     if (millis() - timer >= 50) {  // update gyro values at 20Hz
       imu.complimentaryFilter();
       timer = millis();
