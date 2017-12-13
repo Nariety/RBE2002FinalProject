@@ -24,6 +24,7 @@ void DualDCMotor::setup() {
   //  rightULS.setup(0, 1);
   imu.setup();
   Serial.println("IMU set up finished");
+  delay(50);
   // set up pid control for driving
   pidTurn.setpid(5, 0.28, 0.05);
   //pidCon.setpid(1,0.01,0.001);
@@ -76,12 +77,21 @@ long DualDCMotor::driveAlongWall(long timer) {
   // start driving the robot forward
   setMotorSpeed(0, PWM);
   setMotorSpeed(1, PWM - 20);
+  Serial.print("Front ULS  ");
+  Serial.println(analogRead(MaxBotixPin));
+  Serial.print("Line  ");
+  Serial.println(analogRead(lineSensorPin));
+  Serial.print("Left ULS  ");
+  Serial.println(leftULS.Range());
+
   // when the wall in front is far enough, the line sensor is not detecting an edge, and leftULS is detecting a wall
   while (analogRead(MaxBotixPin) > 10 && analogRead(lineSensorPin) < 700 && leftULS.Range() < 8) {
+
     if (millis() - timer >= 50) {  // update gyro values at 20Hz
       imu.complimentaryFilter();
       timer = millis();
     }
+
     if (millis() - lastTime >= 200) {
       sideError = leftULS.Range() - setDis;
       if (sideError > 0) {
@@ -97,12 +107,52 @@ long DualDCMotor::driveAlongWall(long timer) {
   return timer;
 }
 
+long DualDCMotor::turnTo(long timer, long degree) {
+  float currentAngle = imu.getGyroZ();
+  float targetAngle = currentAngle + degree;
+  float velocity = 0;
+  Serial.println(targetAngle);
+  if (targetAngle > currentAngle) {
+    while (targetAngle > currentAngle + 3 ) {
+      if (millis() - timer >= 50) {  // update gyro values at 20Hz
+        imu.complimentaryFilter();
+        timer = millis();
+      }
+      if (millis() - lastTime > 100) {
+        velocity = pidTurn.calc(targetAngle, currentAngle);
+        Serial.println(velocity);
+        Serial.println(currentAngle);
+        setMotorSpeed(0, velocity);
+        setMotorSpeed(1, -velocity);
+        currentAngle = imu.getGyroZ();
+        lastTime = millis();
+      }
+    }
+  }
+  else if (targetAngle < currentAngle) {
+    while (targetAngle < currentAngle - 3) {
+      if (millis() - timer >= 50) {  // update gyro values at 20Hz
+        imu.complimentaryFilter();
+        timer = millis();
+      }
+      if (millis() - lastTime > 200) {
+        velocity = pidTurn.calc(targetAngle, currentAngle);
+        setMotorSpeed(0, velocity);
+        setMotorSpeed(1, -velocity);
+        currentAngle = imu.getGyroZ();
+        lastTime = millis();
+      }
+    }
+  }
+  stopMotors();
+}
+
 long DualDCMotor::turnRight(long timer) {
   float currentAngle = imu.getGyroZ();
   float targetAngle = 90 + currentAngle;
   float velocity = 0;
   Serial.println(targetAngle);
-  while (targetAngle > currentAngle+3 ) {
+  while (targetAngle > currentAngle + 3 ) {
     if (millis() - timer >= 50) {  // update gyro values at 20Hz
       imu.complimentaryFilter();
       timer = millis();
@@ -124,7 +174,7 @@ long DualDCMotor::turnLeft(long timer) {
   float currentAngle = imu.getGyroZ();
   float targetAngle = currentAngle - 90;
   float velocity = 0;
-  while (targetAngle < currentAngle-3) {
+  while (targetAngle < currentAngle - 3) {
     if (millis() - timer >= 50) {  // update gyro values at 20Hz
       imu.complimentaryFilter();
       timer = millis();

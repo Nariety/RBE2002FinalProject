@@ -15,6 +15,7 @@ class DualDCMotor {
     double calcRightVel();
     
     long driveAlongWall(long timer);
+    long turnTo(long timer,long degree);
     long turnRight(long timer);
     long turnLeft(long timer);
     long driveStraight(long timer);
@@ -27,10 +28,10 @@ class DualDCMotor {
     int rightEncTicks = 0;
 
   private:
-    PID_RBE pidDrive;
+//    PID_RBE pidDrive;
     PID_RBE pidTurn;
     // Initialize MaxBotix Ultrasonic Sensor
-    const int MaxBotixPin = A0;
+    const int MaxBotixPin = 3;
 
     // Initialize UltrasonicSensor*2
     UltrasonicSensor leftULS;

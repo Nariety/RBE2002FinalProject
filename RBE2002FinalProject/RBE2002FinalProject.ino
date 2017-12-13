@@ -76,26 +76,27 @@ void loop() {
   //      break;
   //  }
 
-//  Serial.println("Start robot");
-//  drivetrain.setMotorSpeed(0,-255);
-//  delay(2000);
-//  drivetrain.setMotorSpeed(0,0);
-//  delay(2000);
-  
-  
-    if (millis() - timer >= 50) {  // update gyro values at 20Hz
-      UpdateIMU();
-      timer = millis();
-    }
-  
-    if (millis() - timer2 >= 500) {
-//      timer = drivetrain.turnRight(timer);
-//      timer = drivetrain.turnLeft(timer);
-      timer = drivetrain.driveAlongWall(timer);
-      exit(0);
-      //      Serial.println(drivetrain.imu.getGyroZ());
-      timer2 = millis();
-    }
+  //  Serial.println("Start robot");
+  //  drivetrain.setMotorSpeed(0,-255);
+  //  delay(2000);
+  //  drivetrain.setMotorSpeed(0,0);
+  //  delay(2000);
+
+
+  if (millis() - timer >= 50) {  // update gyro values at 20Hz
+    UpdateIMU();
+    timer = millis();
+  }
+
+  if (millis() - timer2 >= 6000) {
+    //      timer = drivetrain.turnRight(timer);
+    //      timer = drivetrain.turnLeft(timer);
+    timer = drivetrain.driveAlongWall(timer);
+    //    timer = drivetrain.driveStraight(timer);
+    //exit(0);
+    //      Serial.println(drivetrain.imu.getGyroZ());
+    timer2 = millis();
+  }
 
   //  drivetrain.driveStraight();
   //  delay(5000);
