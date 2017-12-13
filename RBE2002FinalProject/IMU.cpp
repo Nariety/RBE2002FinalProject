@@ -28,37 +28,37 @@ void IMU::gyroZero() {
   // takes 200 samples of the gyro
   for (int i = 0; i < 200; i++) {
     gyro.read();
-    gerrx += gyro.g.x;
-    gerry += gyro.g.y;
+//    gerrx += gyro.g.x;
+//    gerry += gyro.g.y;
     gerrz += gyro.g.z;
     delay(20);
   }
-  gerrx = gerrx / 200; // average reading to obtain an error/offset
-  gerry = gerry / 200;
+//  gerrx = gerrx / 200; // average reading to obtain an error/offset
+//  gerry = gerry / 200;
   gerrz = gerrz / 200;
 
-  Serial.println(gerrx); // print error vals
-  Serial.println(gerry);
+//  Serial.println(gerrx); // print error vals
+//  Serial.println(gerry);
   Serial.println(gerrz);
 }
 
 void IMU::readGyro() {
   gyro.read(); // read gyro
   timer = millis(); //reset timer
-  gyro_x = (float)(gyro.g.x - gerrx) * G_gain; // offset by error then multiply by gyro gain factor
-  gyro_y = (float)(gyro.g.y - gerry) * G_gain;
+//  gyro_x = (float)(gyro.g.x - gerrx) * G_gain; // offset by error then multiply by gyro gain factor
+//  gyro_y = (float)(gyro.g.y - gerry) * G_gain;
   gyro_z = (float)(gyro.g.z - gerrz) * G_gain;
 
-  gyro_x = gyro_x * G_Dt; // Multiply the angular rate by the time interval
-  gyro_y = gyro_y * G_Dt;
+//  gyro_x = gyro_x * G_Dt; // Multiply the angular rate by the time interval
+//  gyro_y = gyro_y * G_Dt;
   gyro_z = gyro_z * G_Dt;
 
-  gyro_x += gyro_xold; // add the displacment(rotation) to the cumulative displacment
-  gyro_y += gyro_yold;
+//  gyro_x += gyro_xold; // add the displacment(rotation) to the cumulative displacment
+//  gyro_y += gyro_yold;
   gyro_z += gyro_zold;
 
-  gyro_xold = gyro_x ; // Set the old gyro angle to the current gyro angle
-  gyro_yold = gyro_y ;
+//  gyro_xold = gyro_x ; // Set the old gyro angle to the current gyro angle
+//  gyro_yold = gyro_y ;
   gyro_zold = gyro_z ;
 }
 
@@ -116,25 +116,25 @@ void IMU::Accel_Init(){
   }
 }
 
-void IMU::accelZero() {
-  //I found this to be more problematic than it was worth.
-  //not implemented
-  // takes 100 samples of the accel
-  for (int i = 0; i < 100; i++) {
-    gyro.read();
-    aerrx += accel.a.x >> 4;
-    aerry += accel.a.y >> 4;
-    aerrz += accel.a.z >> 4;
-    delay(10);
-  }
-  aerrx = gerrx / 100; // average reading to obtain an error/offset
-  aerry = gerry / 100;
-  aerrz = gerrz / 100;
-  Serial.println("accel starting values");
-//  Serial.println(aerrx); // print error vals
-//  Serial.println(aerry);
-  Serial.println(aerrz);
-}
+//void IMU::accelZero() {
+//  //I found this to be more problematic than it was worth.
+//  //not implemented
+//  // takes 100 samples of the accel
+//  for (int i = 0; i < 100; i++) {
+//    gyro.read();
+//    aerrx += accel.a.x >> 4;
+//    aerry += accel.a.y >> 4;
+//    aerrz += accel.a.z >> 4;
+//    delay(10);
+//  }
+//  aerrx = gerrx / 100; // average reading to obtain an error/offset
+//  aerry = gerry / 100;
+//  aerrz = gerrz / 100;
+//  Serial.println("accel starting values");
+////  Serial.println(aerrx); // print error vals
+////  Serial.println(aerry);
+//  Serial.println(aerrz);
+//}
 
 
 // Reads x,y and z accelerometer registers
@@ -172,9 +172,9 @@ void IMU::complimentaryFilter() {
   }
 }
 
-void IMU::updateIMU(){
-  complimentaryFilter();
-}
+//void IMU::updateIMU(){
+//  complimentaryFilter();
+//}
 
 float IMU::getGyroZ(){
   return gyro_z;

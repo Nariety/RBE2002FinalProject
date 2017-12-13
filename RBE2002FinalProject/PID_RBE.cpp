@@ -26,7 +26,7 @@ float PID_RBE::calc(double setVel, double curVel){
   errorCount = (errorCount+1)%10;
   // sum up the error value to send to the motor based off gain values. 
   float pid = (error * kp + dError * kd + sum_error * ki)*-1;
-  // limit control value to -254 to 254
+  // limit control value to 254 to -254
   if(pid > 254){
     pid = 254;
   }

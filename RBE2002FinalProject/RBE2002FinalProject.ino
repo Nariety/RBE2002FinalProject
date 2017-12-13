@@ -1,5 +1,6 @@
 #include "StepperMotor.h"
 #include "DualDCMotor.h"
+#include <TimerOne.h>
 
 // Initialize Stepper motor
 const int stepsPerRevolution = 200;
@@ -11,7 +12,7 @@ StepperMotor fanStepper;
    steps(steps);  turn the stepper motor for the given steps,negative for C
 */
 
-// Initialize IRS for START/STOP
+// Initialize ISR for START/STOP
 const int start_stop_pin = 18;
 
 // Initialize drivetrain motors
@@ -23,17 +24,17 @@ const int fanRelayPin = 24;
 // Initialize fan servo
 const int fanServoPin = 11;
 
+// variables for keep track of flame position
 int stepperFlame = 0;
 int servoFlame = 0;
-
 int flameDegFromCenter = 0;
+
+// timer variable
+long timer = 0;
+long timer2 = 0;
 
 enum State {STOP, FIELDSCAN, FLAMESCAN, DRIVE} state;
 int prevState = STOP;
-
-void findFlame() {
-  fanStepper.findFlame(stepperTurn * 2);
-}
 
 void setup() {
   Serial.begin(9600);
@@ -42,45 +43,66 @@ void setup() {
   pinMode(fanRelayPin, OUTPUT);
   digitalWrite(fanRelayPin, LOW);
   pinMode(start_stop_pin, INPUT_PULLUP);
-  // set up IRS for encoders
-  pinMode(20, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(20), LeftEnc, RISING);
+  // set up ISR for encoders
   pinMode(19, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(19), RightEnc, RISING);
+  attachInterrupt(digitalPinToInterrupt(19), LeftEnc, RISING);
+  pinMode(2, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(2), RightEnc, RISING);
   pinMode(18, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(18), startStop, FALLING);
   Serial.println("Robot set up finished");
+  timer = millis();
 }
 
 void loop() {
-  
-//  drivetrain.driveAlongWall();
-//  exit(0);
-  //fanStepper.zeroSelf();
-  
-  extinguish();
-  exit(0);
-  
-//  switch(state){
-//    case STOP:  //cease all motor functions
-//      drivetrain.stopMotors();
-//      fanStepper.hold();
-//      break;
-//    case FIELDSCAN: //scan field to find general direction of flame
-//      flameDegFromCenter = stepToDeg(fanStepper.findFlame(60));
-//      break;
-//    case FLAMESCAN: //horizontal and vertical scan to aim fan at flame
-//      break;
-//    case DRIVE:
-//      break;
-//  }
-  Serial.println("Start robot");
-  drivetrain.setMotorSpeed(1, 255);
-  drivetrain.setMotorSpeed(0, 255);
-  delay(5000);
   //  drivetrain.driveAlongWall();
-  drivetrain.stopMotors();
-  exit(0);
+  //  exit(0);
+  //fanStepper.zeroSelf();
+
+  //  extinguish();
+  //  exit(0);
+
+  //  switch(state){
+  //    case STOP:  //cease all motor functions
+  //      drivetrain.stopMotors();
+  //      fanStepper.hold();
+  //      break;
+  //    case FIELDSCAN: //scan field to find general direction of flame
+  //      flameDegFromCenter = stepToDeg(fanStepper.findFlame(60));
+  //      break;
+  //    case FLAMESCAN: //horizontal and vertical scan to aim fan at flame
+  //      break;
+  //    case DRIVE:
+  //      break;
+  //  }
+
+//  Serial.println("Start robot");
+//  drivetrain.setMotorSpeed(0,-255);
+//  delay(2000);
+//  drivetrain.setMotorSpeed(0,0);
+//  delay(2000);
+  
+  
+    if (millis() - timer >= 50) {  // update gyro values at 20Hz
+      UpdateIMU();
+      timer = millis();
+    }
+  
+    if (millis() - timer2 >= 500) {
+//      timer = drivetrain.turnRight(timer);
+//      timer = drivetrain.turnLeft(timer);
+      timer = drivetrain.driveAlongWall(timer);
+      exit(0);
+      //      Serial.println(drivetrain.imu.getGyroZ());
+      timer2 = millis();
+    }
+
+  //  drivetrain.driveStraight();
+  //  delay(5000);
+  //  drivetrain.driveAlongWall();
+  //  drivetrain.stopMotors();
+  //  exit(0);
+
   //  switch(state){
   //    case STOP:  //cease all motor functions
   //      drivetrain.stopMotors();
@@ -123,6 +145,9 @@ void startStop() {
   }
 }
 
+void UpdateIMU() {
+  drivetrain.imu.complimentaryFilter();
+}
 
 void LeftEnc() {
   drivetrain.leftEncTicks++;
