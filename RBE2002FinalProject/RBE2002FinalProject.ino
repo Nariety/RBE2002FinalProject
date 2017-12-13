@@ -109,7 +109,9 @@ void loop() {
   //      fanStepper.hold();
   //      break;
   //    case FIELDSCAN: //scan field to find general direction of flame
+  //      drivetrain.turnRight();
   //      flameDegFromCenter = stepToDeg(fanStepper.findFlame(60));
+  //      drivetrain.turnLeft();
   //      break;
   //    case FLAMESCAN: //horizontal and vertical scan to aim fan at flame
   //      break;
