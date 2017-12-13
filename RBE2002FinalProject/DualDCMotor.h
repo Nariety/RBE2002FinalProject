@@ -18,7 +18,9 @@ class DualDCMotor {
     long turnTo(long timer,long degree);
     long turnRight(long timer);
     long turnLeft(long timer);
-    long driveStraight(long timer);
+    long drivePassWall(long timer);
+    long driveStraight(long timer, int distance);
+    long backOff(long timer);
     void setMotorSpeed(int rightSide, int velocity);
     void stopMotors();
 
@@ -58,6 +60,8 @@ class DualDCMotor {
     double prevPos;
     long lastTime = 0;
     double ticksToPassWall = 2800;
+    double ticksToDrive = 16600;
+    double ticksToBackOff = 1100;
 
     int PWM = 255;
     int leftPWM = 255;

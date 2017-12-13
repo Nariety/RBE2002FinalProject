@@ -38,7 +38,7 @@ int prevState = STOP;
 
 void setup() {
   Serial.begin(9600);
-  fanStepper.setup(12, 13);
+  fanStepper.setup(12, 13, 11);
   drivetrain.setup();
   pinMode(fanRelayPin, OUTPUT);
   digitalWrite(fanRelayPin, LOW);
@@ -73,8 +73,7 @@ void loop() {
     UpdateIMU();
     timer = millis();
   }
-
-  if (millis() - timer2 >= 500) {
+  if (millis() - timer2 >= 5000) {
     //      timer = drivetrain.turnRight(timer);
     //      timer = drivetrain.turnLeft(timer);
     timer = drivetrain.driveAlongWall(timer);
