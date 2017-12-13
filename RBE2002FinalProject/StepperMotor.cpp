@@ -100,6 +100,7 @@ int StepperMotor::findFlame(int range) {
       stepCountBuffer = stepCount;
     }
   }
+  flameVal = lowestPoint;
   return stepCountBuffer;
 }
 

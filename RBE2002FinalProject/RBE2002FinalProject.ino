@@ -62,20 +62,6 @@ void loop() {
   //  extinguish();
   //  exit(0);
 
-  //  switch(state){
-  //    case STOP:  //cease all motor functions
-  //      drivetrain.stopMotors();
-  //      fanStepper.hold();
-  //      break;
-  //    case FIELDSCAN: //scan field to find general direction of flame
-  //      flameDegFromCenter = stepToDeg(fanStepper.findFlame(60));
-  //      break;
-  //    case FLAMESCAN: //horizontal and vertical scan to aim fan at flame
-  //      break;
-  //    case DRIVE:
-  //      break;
-  //  }
-
 //  Serial.println("Start robot");
 //  drivetrain.setMotorSpeed(0,-255);
 //  delay(2000);
@@ -103,21 +89,24 @@ void loop() {
   //  drivetrain.stopMotors();
   //  exit(0);
 
-  //  switch(state){
-  //    case STOP:  //cease all motor functions
-  //      drivetrain.stopMotors();
-  //      fanStepper.hold();
-  //      break;
-  //    case FIELDSCAN: //scan field to find general direction of flame
-  //      drivetrain.turnRight();
-  //      flameDegFromCenter = stepToDeg(fanStepper.findFlame(60));
-  //      drivetrain.turnLeft();
-  //      break;
-  //    case FLAMESCAN: //horizontal and vertical scan to aim fan at flame
-  //      break;
-  //    case DRIVE:
-  //      break;
-  //  }
+    switch(state){
+      case STOP:  //cease all motor functions
+        drivetrain.stopMotors();
+        fanStepper.hold();
+        break;
+      case FIELDSCAN: //scan field to find general direction of flame
+        drivetrain.turnRight();
+        flameDegFromCenter = stepToDeg(fanStepper.findFlame(60));
+        if(fanStepper.flameVal < 500){
+          drivetrain.turnTo();
+        }
+        drivetrain.turnLeft();
+        break;
+      case FLAMESCAN: //horizontal and vertical scan to aim fan at flame
+        break;
+      case DRIVE:
+        break;
+    }
 }
 
 //returns step number mapped to degrees (-45 is left, +45 is right)
